@@ -1,0 +1,5 @@
+{
+  "name": "Sketch Stick Figure Editor",
+  "description": "A web application that allows users to create and edit stick figure poses by dragging control points for joints like the head, limbs, and torso.",
+  "requestFramePermissions": []
+}
