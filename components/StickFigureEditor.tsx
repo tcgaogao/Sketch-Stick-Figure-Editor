@@ -296,6 +296,7 @@ const StickFigureEditor: React.FC<StickFigureEditorProps> = ({
 
         {stickFigures.map(figure => {
           const isSelectedFigure = figure.id === selectedFigureId;
+          const figureColor = figure.color === 'black' && theme === 'dark' ? '#67e8f9' : figure.color;
           return (
             <g key={figure.id} filter={theme === 'dark' ? "url(#neon-glow)" : "none"} opacity={!selectedFigureId || isSelectedFigure ? 1 : 0.3} className="transition-opacity">
               {LIMBS.map(([start, end], i) => (
@@ -303,7 +304,7 @@ const StickFigureEditor: React.FC<StickFigureEditorProps> = ({
                   key={i} 
                   x1={figure.pose[start].x} y1={figure.pose[start].y} 
                   x2={figure.pose[end].x} y2={figure.pose[end].y} 
-                  stroke={theme === 'dark' ? figure.color : (figure.color || 'black')}
+                  stroke={figureColor}
                   strokeWidth="5" 
                   strokeLinecap="round" 
                   data-figure-id={figure.id} 
@@ -312,15 +313,15 @@ const StickFigureEditor: React.FC<StickFigureEditorProps> = ({
               ))}
               <circle 
                 cx={figure.pose.head.x} cy={figure.pose.head.y} r="20" 
-                stroke={theme === 'dark' ? figure.color : (figure.color || 'black')}
+                stroke={figureColor}
                 strokeWidth="5" fill="none" data-figure-id={figure.id} className="cursor-pointer" 
               />
               {/* FIX: Explicitly type the `p` parameter to resolve TypeScript errors. */}
               {isSelectedFigure && Object.entries(figure.pose).map(([name, p]: [string, Point]) => {
                 const jointName = name as JointName;
                 const isSelectedJoint = selectedJoints.has(jointName);
-                const jointColor = theme === 'dark' ? (isSelectedJoint ? '#f0f' : 'white') : (isSelectedJoint ? '#0891b2' : 'black');
-                const jointStroke = theme === 'dark' ? '#67e8f9' : (isSelectedJoint ? '#67e8f9' : 'white');
+                const jointColor = isSelectedJoint ? (theme === 'dark' ? '#67e8f9' : '#0891b2') : (theme === 'dark' ? 'white' : 'black');
+                const jointStroke = theme === 'dark' ? 'black' : 'white';
 
                 return (
                   <g key={name}>
@@ -337,9 +338,9 @@ const StickFigureEditor: React.FC<StickFigureEditorProps> = ({
 
         {boundingBox && (
           <g>
-            <rect x={boundingBox.x - padding} y={boundingBox.y - padding} width={boundingBox.width + padding*2} height={boundingBox.height + padding*2} fill="none" stroke={theme === 'dark' ? 'cyan' : '#0891b2'} strokeWidth="1" strokeDasharray="4 4" className="pointer-events-none" />
+            <rect x={boundingBox.x - padding} y={boundingBox.y - padding} width={boundingBox.width + padding*2} height={boundingBox.height + padding*2} fill="none" stroke={theme === 'dark' ? '#06b6d4' : '#0891b2'} strokeWidth="1" strokeDasharray="4 4" className="pointer-events-none" />
             {/* Move Handle */}
-            <circle cx={boundingBox.x + boundingBox.width / 2} cy={boundingBox.y - padding} r="8" fill={theme === 'dark' ? 'cyan' : '#0891b2'} stroke={theme === 'dark' ? 'black' : 'white'} strokeWidth="1.5" data-move-handle="true" className="cursor-move" />
+            <circle cx={boundingBox.x + boundingBox.width / 2} cy={boundingBox.y - padding} r="8" fill={theme === 'dark' ? '#06b6d4' : '#0891b2'} stroke={theme === 'dark' ? 'black' : 'white'} strokeWidth="1.5" data-move-handle="true" className="cursor-move" />
             {/* Scale Handles */}
             {[
                 [boundingBox.x - padding, boundingBox.y - padding], 
@@ -347,7 +348,7 @@ const StickFigureEditor: React.FC<StickFigureEditorProps> = ({
                 [boundingBox.x - padding, boundingBox.y + boundingBox.height + padding], 
                 [boundingBox.x + boundingBox.width + padding, boundingBox.y + boundingBox.height + padding]
             ].map(([x,y], i) => (
-              <rect key={i} x={x-5} y={y-5} width="10" height="10" fill={theme === 'dark' ? 'cyan' : '#0891b2'} data-scale-handle={i} className="cursor-nwse-resize" />
+              <rect key={i} x={x-5} y={y-5} width="10" height="10" fill={theme === 'dark' ? '#06b6d4' : '#0891b2'} data-scale-handle={i} className="cursor-nwse-resize" />
             ))}
           </g>
         )}
@@ -358,8 +359,8 @@ const StickFigureEditor: React.FC<StickFigureEditorProps> = ({
             y={Math.min(selectionBox.start.y, selectionBox.current.y)}
             width={Math.abs(selectionBox.start.x - selectionBox.current.x)}
             height={Math.abs(selectionBox.start.y - selectionBox.current.y)}
-            fill={theme === 'dark' ? 'rgba(0, 255, 255, 0.2)' : 'rgba(8, 145, 178, 0.2)'}
-            stroke={theme === 'dark' ? 'rgba(0, 255, 255, 0.7)' : 'rgba(8, 145, 178, 0.7)'}
+            fill={theme === 'dark' ? 'rgba(103, 232, 249, 0.2)' : 'rgba(8, 145, 178, 0.2)'}
+            stroke={theme === 'dark' ? 'rgba(103, 232, 249, 0.7)' : 'rgba(8, 145, 178, 0.7)'}
             strokeWidth="1"
             className="pointer-events-none"
           />
